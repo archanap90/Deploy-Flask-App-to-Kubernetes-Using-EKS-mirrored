@@ -9,7 +9,7 @@ data:
     username: build
     groups:
       - system:masters
-    - rolearn: <ARN of instance role (not instance profile)>
+    - rolearn: arn:aws:iam::362114946245:role/UdacityFlaskDeployCBKubectlRole
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
