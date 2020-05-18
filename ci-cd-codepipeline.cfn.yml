@@ -9,7 +9,7 @@ Parameters:
   EksClusterName:
     Type: String
     Description: The name of the EKS cluster created
-    Default: 
+    Default: simple-jwt-api
     MinLength: 1
     MaxLength: 100
     ConstraintDescription: You must enter the EKS cluster name
@@ -17,7 +17,7 @@ Parameters:
   GitSourceRepo:
     Type: String
     Description: GitHub source repository - must contain a Dockerfile and buildspec.yml in the base
-    Default: 
+    Default: FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS
     MinLength: 1
     MaxLength: 100
     ConstraintDescription: You must enter a GitHub repository name
@@ -40,7 +40,7 @@ Parameters:
 
   GitHubUser:
     Type: String
-    Default:
+    Default: archanap90
     Description: GitHub username or organization
     MinLength: 3
     MaxLength: 100
@@ -56,7 +56,7 @@ Parameters:
 
   KubectlRoleName:
     Type: String
-    Default: 
+    Default: UdacityFlaskDeployCBKubectlRole
     Description: IAM role used by kubectl to interact with EKS cluster
     MinLength: 3
     MaxLength: 100
@@ -114,6 +114,7 @@ Resources:
 
   CustomResourceLambda:
     Type: AWS::Lambda::Function
+    DeletionPolicy: Retain
     Properties:
       Code:
         ZipFile: |
@@ -166,6 +167,7 @@ Resources:
 
   CustomResourceLambdaExecutionRole:
     Type: AWS::IAM::Role
+    DeletionPolicy: Retain
     Properties:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
@@ -192,6 +194,7 @@ Resources:
 
   KubectlAssumeRoleCustomResource:
     Type: Custom::CustomResource
+    DeletionPolicy: Retain
     Properties:
       ServiceToken: !GetAtt CustomResourceLambda.Arn
       KubectlRoleName: !Ref KubectlRoleName
@@ -202,6 +205,7 @@ Resources:
 
   CodePipelineServiceRole:
     Type: AWS::IAM::Role
+    DeletionPolicy: Retain
     Properties:
       Path: /
       AssumeRolePolicyDocument:
@@ -238,6 +242,7 @@ Resources:
 
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
+    DeletionPolicy: Retain
     Properties:
       Path: /
       AssumeRolePolicyDocument:
@@ -327,6 +332,7 @@ Resources:
       Name: !Ref AWS::StackName
       ServiceRole: !GetAtt CodeBuildServiceRole.Arn
     DependsOn: KubectlAssumeRoleCustomResource
+    DeletionPolicy: Retain
 
   CodePipelineGitHub:
     Type: AWS::CodePipeline::Pipeline
@@ -368,3 +374,4 @@ Resources:
                 - Name: BuildOutput
               RunOrder: 1
     DependsOn: CodeBuildProject
+    DeletionPolicy: Retain

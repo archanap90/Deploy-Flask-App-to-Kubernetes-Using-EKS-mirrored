@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::362114946245:role/UdacityFlaskDeployCBKubectlRole
+    username: build
+    groups:
+      - system:masters
