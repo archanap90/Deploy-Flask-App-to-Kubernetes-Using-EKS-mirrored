@@ -47,13 +47,20 @@ For more detail about each of these steps, see the project lesson [here](https:/
 - docker run --publish 8000:8080 --env-file ./env_file --detach --name jwt-api-test-5 jwt-api-test:3.0 
 
 export ACCOUNT_ID = pipenv run aws sts get-caller-identity --query Account --output text
+
 export   TRUST="{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::${ACCOUNT_ID}:root\" }, \"Action\": \"sts:AssumeRole\" } ] }"
+
 pipenv run aws iam create-role --role-name UdacityFlaskDeployCBKubectlRole --assume-role-policy-document "$TRUST" --output text --query 'Role.Arn'
 arn:aws:iam::362114946245:role/UdacityFlaskDeployCBKubectlRole
+
 echo '{ "Version": "2012-10-17", "Statement": [ { "Effect": "Allow", "Action": [ "eks:Describe*", "ssm:GetParameters" ], "Resource": "*" } ] }' > /tmp/iam-role-policy 
+
 pipenv run  aws iam put-role-policy --role-name UdacityFlaskDeployCBKubectlRole --policy-name eks-describe --policy-document file:///tmp/iam-role-policy
 
 pipenv run kubectl patch configmap/aws-auth -n kube-system --patch "$(cat /tmp/aws-auth-patch.yml)"
+
 brew install weaveworks/tap/eksctl
-pipenv run eksctl create cluster --name simple-jwt-api --without-nodegroup
+
+pipenv run eksctl create cluster --name simple-jwt-api 
+
 pipenv run aws ssm put-parameter --name JWT_SECRET --value "<SECRET>" --type SecureString
