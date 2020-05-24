@@ -17,7 +17,7 @@ ENV LOG_LEVEL $LOG_LEVEL
 EXPOSE 8080
 
 # Run the specified command within the container.
-CMD [ "gunicorn", "-b", ":8080", "main:APP" ]
+ENTRYPOINT [ "gunicorn", "-b", ":8080", "main:APP" ]
 
 # Copy the rest of your app's source code from your host to your image filesystem.
 COPY . .
