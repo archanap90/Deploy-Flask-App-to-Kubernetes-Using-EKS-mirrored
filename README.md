@@ -42,9 +42,9 @@ For more detail about each of these steps, see the project lesson [here](https:/
 
 - curl --request GET 'http://127.0.0.1:8080/contents' -H "Authorization: Bearer ${TOKEN}" | jq .
 
-- docker build --tag jwt-api-test:1.0 . 
+- docker build --tag jwt-api-test:8.0 . 
 
-- docker run --publish 8000:8080 --env-file ./env_file --detach --name jwt-api-test-5 jwt-api-test:3.0 
+- docker run --publish 80:8080 --env-file ./env_file --detach --name jwt-api-test-88 jwt-api-test:8.0 
 
 export ACCOUNT_ID = pipenv run aws sts get-caller-identity --query Account --output text
 
