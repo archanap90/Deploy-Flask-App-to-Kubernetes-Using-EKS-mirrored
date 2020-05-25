@@ -23,6 +23,8 @@ phases:
         - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' simple_jwt_api.yml
         - $(aws ecr get-login --no-include-email)
         - export KUBECONFIG=$HOME/.kube/config
+        - curl https://bootstrap.pypa.io/ez_setup.py -o - | python3.5
+        - easy_install pip
         - pip3 install -r test_requirements.txt
         - pytest test_main.py
   build:
