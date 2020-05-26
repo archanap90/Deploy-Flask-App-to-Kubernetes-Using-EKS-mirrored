@@ -29,7 +29,6 @@ def test_health(client):
 
 
 def test_auth(client):
-    assert False
     body = {'email': EMAIL,
             'password': PASSWORD}
     response = client.post('/auth', 
