@@ -16,7 +16,7 @@ packaging==20.4
 pluggy==0.13.1
 py==1.8.1
 pyasn1==0.4.8
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyparsing==2.4.7
 typing
 pytest==5.4.2
